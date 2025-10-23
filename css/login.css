@@ -1,0 +1,96 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: "Poppins", sans-serif;
+}
+
+body {
+  background: linear-gradient(145deg, #8b0000, #b71c1c, #d32f2f);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+}
+
+.contenedor-login {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  padding: 20px;
+}
+
+.tarjeta-login {
+  background: #fff5f5; /* tarjeta clara sobre fondo fuego */
+  padding: 40px 30px;
+  border-radius: 15px;
+  box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+  width: 100%;
+  max-width: 400px;
+}
+
+.tarjeta-login h2 {
+  text-align: center;
+  margin-bottom: 30px;
+  color: #b71c1c;
+}
+
+.tarjeta-login label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 500;
+  color: #333;
+}
+
+.tarjeta-login input {
+  width: 100%;
+  padding: 12px 15px;
+  margin-bottom: 20px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  outline: none;
+  font-size: 1rem;
+}
+
+.tarjeta-login input:focus {
+  border-color: #d32f2f;
+}
+
+.boton-login {
+  width: 100%;
+  padding: 12px;
+  background: #d32f2f;
+  color: #fff;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.boton-login:hover {
+  background: #b71c1c;
+}
+
+.registro {
+  text-align: center;
+  margin-top: 15px;
+  font-size: 0.9rem;
+}
+
+.registro a {
+  color: #d32f2f;
+  text-decoration: none;
+}
+
+.registro a:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVO */
+@media (max-width: 500px) {
+  .tarjeta-login {
+    padding: 30px 20px;
+  }
+}
