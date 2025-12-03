@@ -1,0 +1,117 @@
+-- ============================================
+-- BASE DE DATOS: FIRESTORE - EQUIPAMIENTO BOMBEROS
+-- ============================================
+
+CREATE DATABASE IF NOT EXISTS firestore_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE firestore_db;
+
+-- ============================================
+-- TABLA: usuarios
+-- ============================================
+CREATE TABLE usuarios (
+    id_usuario INT AUTO_INCREMENT PRIMARY KEY,
+    usuario VARCHAR(50) UNIQUE NOT NULL,
+    contrasena VARCHAR(255) NOT NULL,
+    nombre_completo VARCHAR(150),
+    email VARCHAR(100),
+    telefono VARCHAR(20),
+    fecha_registro TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    activo BOOLEAN DEFAULT TRUE
+);
+
+-- ============================================
+-- TABLA: categorias
+-- ============================================
+CREATE TABLE categorias (
+    id_categoria INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(100) NOT NULL,
+    descripcion TEXT,
+    imagen VARCHAR(255),
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP
+);
+
+-- ============================================
+-- TABLA: productos
+-- ============================================
+CREATE TABLE productos (
+    id_producto INT AUTO_INCREMENT PRIMARY KEY,
+    nombre VARCHAR(200) NOT NULL,
+    descripcion TEXT,
+    precio_base DECIMAL(10, 2) NOT NULL,
+    id_categoria INT,
+    imagen_principal VARCHAR(255),
+    stock INT DEFAULT 0,
+    activo BOOLEAN DEFAULT TRUE,
+    fecha_creacion TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_categoria) REFERENCES categorias(id_categoria)
+);
+
+-- ============================================
+-- TABLA: ofertas
+-- ============================================
+CREATE TABLE ofertas (
+    id_oferta INT AUTO_INCREMENT PRIMARY KEY,
+    id_producto INT NOT NULL,
+    tipo_descuento ENUM('porcentaje', 'cantidad') DEFAULT 'porcentaje',
+    valor_descuento DECIMAL(10, 2) NOT NULL,
+    fecha_inicio DATE NOT NULL,
+    fecha_fin DATE NOT NULL,
+    activo BOOLEAN DEFAULT TRUE,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE CASCADE
+);
+
+-- ============================================
+-- TABLA: carrito
+-- ============================================
+CREATE TABLE carrito (
+    id_carrito INT AUTO_INCREMENT PRIMARY KEY,
+    session_id VARCHAR(100) NOT NULL,
+    id_producto INT NOT NULL,
+    cantidad INT DEFAULT 1,
+    fecha_agregado TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (id_producto) REFERENCES productos(id_producto) ON DELETE CASCADE
+);
+
+-- ============================================
+-- INSERTAR CATEGORÍAS
+-- ============================================
+INSERT INTO categorias (nombre, descripcion, imagen) VALUES
+('Herramientas', 'Hachas, herramientas de corte y rescate', 'imagenes/hachabombero.png'),
+('Protección Personal', 'Cascos, guantes, capuchas y máscaras', 'imagenes/cascobombero.png'),
+('Vestimenta', 'Trajes, botas y ropa especializada', 'imagenes/trajebombero.png'),
+('Iluminación', 'Lámparas y equipos de iluminación', 'imagenes/lamparabombero.png'),
+('Vehículos', 'Camiones y vehículos de emergencia', 'imagenes/camionbomberos.png');
+
+-- ============================================
+-- INSERTAR PRODUCTOS
+-- ============================================
+INSERT INTO productos (nombre, descripcion, precio_base, id_categoria, imagen_principal, stock) VALUES
+('Hacha de bombero', 'Herramienta esencial para bomberos, diseñada para cortar a través de materiales resistentes.', 903.32, 1, 'imagenes/hachabombero.png', 45),
+('Hacha Halligan', 'Herramienta versátil para la entrada forzada y rescate.', 1499.09, 1, 'imagenes/halligan.png', 30),
+('Guantes de bombero', 'Protección y agarre superior para los bomberos más exigentes.', 479.22, 2, 'imagenes/guantebombero.png', 120),
+('Capucha de bombero', 'Diseñada para proteger la cabeza y el cuello de los bomberos en situaciones extremas.', 522.63, 2, 'imagenes/capuchabombero.png', 85),
+('Casco de bombero', 'Protección completa para la cabeza de los bomberos en situaciones extremas.', 6009.33, 2, 'imagenes/cascobombero.png', 35),
+('Máscara de bombero', 'Protección facial y respiratoria para los bomberos más atrevidos.', 999.00, 2, 'imagenes/mascarabombero.png', 60),
+('Traje de bombero', 'Protección completa para los bomberos en situaciones extremas.', 2377.54, 3, 'imagenes/trajebombero.png', 40),
+('Botas de bombero', 'Protección y comodidad para los bomberos en acción.', 634.00, 3, 'imagenes/botasbombero.png', 95),
+('Lámpara de bombero', 'Iluminación potente y resistente para situaciones de emergencia.', 1148.40, 4, 'imagenes/lamparabombero.png', 70),
+('Camión de bomberos', 'Vehículo de emergencia diseñado para el transporte de bomberos y equipos.', 997000.00, 5, 'imagenes/camionbomberos.png', 3);
+
+-- ============================================
+-- INSERTAR OFERTAS
+-- ============================================
+INSERT INTO ofertas (id_producto, tipo_descuento, valor_descuento, fecha_inicio, fecha_fin, activo) VALUES
+(1, 'porcentaje', 15.00, '2024-12-01', '2025-01-31', TRUE),
+(3, 'porcentaje', 20.00, '2024-12-01', '2025-01-31', TRUE),
+(4, 'porcentaje', 10.00, '2024-12-01', '2025-01-31', TRUE),
+(7, 'porcentaje', 25.00, '2024-12-01', '2025-01-31', TRUE),
+(9, 'cantidad', 150.00, '2024-12-01', '2025-01-31', TRUE);
+
+-- ============================================
+-- INSERTAR USUARIO DE PRUEBA
+-- ============================================
+-- Contraseña: bombero123 (encriptada con password_hash en PHP)
+INSERT INTO usuarios (usuario, contrasena, nombre_completo, email, telefono) VALUES
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Administrador FireStore', 'admin@firestore.com', '+52 55 1234 5678'),
+('bombero1', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'Juan Pérez', 'juan@firestore.com', '+52 55 9876 5432');
