@@ -134,6 +134,11 @@ $usuario_logueado = isset($_SESSION['usuario']) ? $_SESSION['usuario'] : null;
         <span style="margin-right: 15px; color: #666;">
           <i class="fas fa-user"></i> <?php echo htmlspecialchars($usuario_logueado); ?>
         </span>
+        <?php if($usuario_logueado === 'admin'): ?>
+        <a href="admin_panel.php" style="color: #b71c1c; margin-right: 15px;">
+          <i class="fas fa-cog"></i> Admin
+        </a>
+        <?php endif; ?>
         <a href="logout.php" style="color: #dc3545;">Cerrar sesión</a>
       <?php else: ?>
         <a href="registro.php">Registrarse</a>
